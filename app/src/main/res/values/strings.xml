@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="app_name">Secure Messenger</string>
+    <string name="send_button_label">Send</string>
+    <string name="sign_out">Sign Out</string>
+
+
+</resources>
