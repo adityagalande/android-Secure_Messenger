@@ -36,6 +36,7 @@ public class MessageAdapter extends ArrayAdapter<SecureMessenger> {
 
         boolean isPhoto = secureMessenger.getPhotoUrl() != null;
 
+        //If IMAGE then hide TEXT otherwise hide TEXT and show IMAGE
         if (isPhoto){
             messageTextView.setVisibility(View.GONE);
             photoImageView.setVisibility(View.VISIBLE);
