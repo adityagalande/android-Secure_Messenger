@@ -3,6 +3,10 @@ package com.android.firebase.securemessenger;
 public class SecureMessenger {
     private String text, name, photoUrl;
 
+    public SecureMessenger(){
+
+    }
+
     public SecureMessenger(String text, String name, String photoUrl){
         this.text = text;
         this.name = name;
