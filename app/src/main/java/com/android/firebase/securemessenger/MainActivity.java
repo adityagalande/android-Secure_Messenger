@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -31,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -217,6 +219,14 @@ public class MainActivity extends AppCompatActivity {
             } else if (requestCode == RC_PHOTO_PICKER && requestCode == RESULT_OK) {
                 Uri selectedImageUri = data.getData();
                 StorageReference photoReferance = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
+
+                //upload file to firebase storage
+                photoReferance.putFile(selectedImageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        taskSnapshot.getDownload
+                    }
+                });
             }
         }
     }
