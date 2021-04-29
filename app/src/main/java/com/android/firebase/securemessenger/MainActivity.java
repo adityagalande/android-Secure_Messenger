@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
 
     public static final int RC_SIGN_IN = 1;
-    private static final int RC_PHOTO_PICKER =  2;
+    private static final int RC_PHOTO_PICKER = 2;
 
     private ListView mMessageListView;
     private MessageAdapter mMessageAdapter;
@@ -216,15 +217,16 @@ public class MainActivity extends AppCompatActivity {
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(MainActivity.this, "Signed-Out", Toast.LENGTH_LONG).show();
                 finish();
-            } else if (requestCode == RC_PHOTO_PICKER && requestCode == RESULT_OK) {
+            } else if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
                 Uri selectedImageUri = data.getData();
-                StorageReference photoReferance = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
-
-                //upload file to firebase storage
-                photoReferance.putFile(selectedImageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                StorageReference photoRef = mChatPhotosStorageReference.child(selectedImageUri.getLastPathSegment());
+                photoRef.putFile(selectedImageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        taskSnapshot.getDownload
+                        //This not working
+                        Task<Uri> downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                        SecureMessenger secureMessenger = new SecureMessenger(null, mUsername, downloadUrl.toString());
+                        mMessageDatabaseReference.push().setValue(secureMessenger);
                     }
                 });
             }
